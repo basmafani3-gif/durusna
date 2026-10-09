@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>دروس سعود</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&display=swap">
+<style>
+/* Layout: one column lesson player. Step rail on top, then "from the book" card, "another way" card, then a quiz one question at a time. Single bright look by choice, sibling of Sara's page. */
+:root{
+  color-scheme:light;
+  --sky:#E1EEFF; --paper:#FFFFFF; --ink:#16255A; --soft:#56679C; --edge:#B7CFF2;
+  --teal:#0E9F8E; --sun:#FFC93C; --sunsoft:#FFF4CC; --ok:#17A673; --no:#E5484D; --nosoft:#FFE4E5;
+  --font:"Baloo Bhaijaan 2","Tajawal","Segoe UI",Tahoma,system-ui,sans-serif;
+  --r:22px;
+}
+*{box-sizing:border-box}
+body{background:var(--sky);color:var(--ink);font-family:var(--font);font-size:1.15rem;line-height:1.7;padding-inline:16px;padding-block:16px}
+.wrap{max-width:680px;margin-inline:auto;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-direction:column;gap:2px}
+h1{margin:0;font-size:1.9rem;font-weight:800;line-height:1.2}
+.sub{margin:0;color:var(--soft);font-weight:700;font-size:1.05rem}
+.rail{display:flex;gap:6px}
+.rail i{flex:1;height:10px;border-radius:99px;background:var(--paper)}
+.rail i.done{background:var(--teal)}.rail i.now{background:var(--sun)}
+h2{margin:0;font-size:1.6rem;font-weight:800;text-wrap:balance}
+.pg{color:var(--soft);font-size:1rem;font-weight:700}
+.card{background:var(--paper);border-radius:var(--r);padding:16px 18px;box-shadow:0 6px 0 var(--edge);display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.alt{background:var(--sunsoft);box-shadow:0 6px 0 #EBD58A}
+.tag{align-self:flex-start;background:var(--ink);color:#fff;border-radius:99px;padding:0 14px;font-size:.95rem;font-weight:700}
+.alt .tag{background:var(--sun);color:var(--ink)}
+dl{margin:0;display:flex;flex-direction:column;gap:10px}
+dt{font-weight:800;color:var(--teal);font-size:1.25rem}
+dd{margin:0}
+.ex{color:var(--no);font-weight:700}
+p{margin:0}
+button{font-family:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+.go{background:var(--teal);color:#fff;border-radius:99px;padding:10px 26px;font-size:1.3rem;font-weight:800;box-shadow:0 6px 0 #08695e;align-self:center}
+.go:active,.opt:active{transform:translateY(3px)}
+.go.plain{background:var(--paper);color:var(--ink);box-shadow:0 6px 0 var(--edge)}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.q{font-size:1.45rem;font-weight:800;text-wrap:balance}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{background:var(--paper);border-radius:16px;padding:10px 16px;font-size:1.25rem;font-weight:700;text-align:start;box-shadow:0 5px 0 var(--edge)}
+.opt.ok{background:var(--ok);color:#fff;box-shadow:0 5px 0 #0d6e4b}
+.opt.no{background:var(--nosoft);color:var(--no);box-shadow:0 5px 0 #f3b5b8}
+.fb{font-weight:800;font-size:1.2rem;min-height:1.7em}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}
+.big{font-size:3.4rem;font-weight:800;line-height:1.1;text-align:center;font-variant-numeric:tabular-nums}
+.res{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.res li{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid var(--sky);padding-block:4px}
+.res b{font-variant-numeric:tabular-nums}
+.res .weak b{color:var(--no)}
+.les{display:flex;justify-content:space-between;align-items:center;gap:12px}.les b{white-space:nowrap;color:var(--soft);font-variant-numeric:tabular-nums}.les b.full{color:var(--ok)}
+.home{align-self:flex-start;background:var(--paper);border-radius:99px;padding:4px 16px;font-weight:700;font-size:1rem;box-shadow:0 4px 0 var(--edge);margin-top:6px}
+.note{color:var(--soft);font-size:1rem;text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.allkids{align-self:flex-start;color:inherit;font-weight:700;font-size:1rem;opacity:.7}
+</style>
+
+</head>
+<body>
+<div class="wrap" dir="rtl" lang="ar">
+  <header>
+    <a class="allkids" href="./">⬅ كل الصفحات</a>
+    <h1>دروس سعود</h1>
+    <p class="sub">لغتي الجميلة · الصف الخامس</p>
+    <button class="home" id="home" hidden>☰ قائمة الدروس</button>
+  </header>
+  <div class="rail" id="rail" aria-hidden="true"></div>
+  <main id="stage" class="wrap"></main>
+  <p class="note">كل ما في هذه الدروس مأخوذ من كتاب لغتي الجميلة للصف الخامس فقط.</p>
+</div>
+
+<script>
+const L1=[
+{t:"أنواع الكلمة",pg:"١٢",
+ book:[["الاسم","ما دلَّ على معنًى في نفسه دون اقتران بزمن. علاماته: التنوين، ال التعريف، الجر.",""],
+       ["الفعل","ما دلَّ على حدث مقترن بزمن. أنواعه: ماضٍ، مضارع، أمر.",""],
+       ["الحرف","لفظ لا يظهر معناه إلا إذا اقترن بغيره.","حروف الجر (إلى، عن، في…)، والعطف (الواو، ثم، الفاء)، والنداء (يا)"]],
+ alt:"اسأل نفسك سؤالين عن أي كلمة: هل فيها حدث؟ وهل معها زمن؟ إن كان فيها حدث وزمن فهي فعل. إن كان لها معنى وحدها بلا زمن فهي اسم. وإن لم يظهر معناها إلا مع كلمة أخرى فهي حرف.",
+ q:[["«ما دلَّ على حدث مقترن بزمن» هو تعريف:",["الفعل","الاسم","الحرف"]],
+    ["أيٌّ من هذه من علامات الاسم؟",["التنوين","الأمر","العطف"]],
+    ["(إلى، عن، في) هي حروف:",["الجر","العطف","النداء"]],
+    ["لفظ لا يظهر معناه إلا إذا اقترن بغيره:",["الحرف","الاسم","الفعل"]]]},
+{t:"أنواع الفعل",pg:"١٢",
+ book:[["ماضٍ","","دَرَسَ، كَتَبَ"],["مضارع","","يَدرسُ، يَكتبُ"],["أمر","","اُدرسْ، اُكتبْ"]],
+ alt:"انظر إلى الفعل نفسه وهو ينتقل بين الأنواع الثلاثة: دَرَسَ (ماضٍ) ← يَدرسُ (مضارع) ← اُدرسْ (أمر). ومثله: كَتَبَ ← يَكتبُ ← اُكتبْ.",
+ q:[["«كَتَبَ» فعل:",["ماضٍ","مضارع","أمر"]],
+    ["«يَدرسُ» فعل:",["مضارع","ماضٍ","أمر"]],
+    ["«اُكتبْ» فعل:",["أمر","ماضٍ","مضارع"]]]},
+{t:"نوعا الجملة",pg:"١٢",
+ book:[["الجملة الاسمية","التي تبدأ باسم، ولها ركنان أساسيان: المبتدأ والخبر، وهما مرفوعان دائمًا.","الشمسُ ساطعةٌ"],
+       ["الجملة الفعلية","التي تبدأ بفعل، ولها ركنان أساسيان: فعل يدل على حدث، وفاعل يُحدث الفعل.","يحرصُ المسلمُ على فروضِه"]],
+ alt:"انظر إلى أول كلمة في الجملة. «الشمسُ ساطعةٌ» تبدأ باسم (الشمس) فهي اسمية: الشمسُ مبتدأ، ساطعةٌ خبر. «يحرصُ المسلمُ على فروضِه» تبدأ بفعل (يحرص) فهي فعلية: يحرصُ فعل، المسلمُ فاعل.",
+ q:[["الجملة الاسمية هي التي تبدأ بـ:",["اسم","فعل","حرف"]],
+    ["الركنان الأساسيان للجملة الاسمية:",["المبتدأ والخبر","الفعل والفاعل","الاسم والحرف"]],
+    ["«يحرصُ المسلمُ على فروضِه» جملة:",["فعلية","اسمية"]],
+    ["المبتدأ والخبر دائمًا:",["مرفوعان","ماضيان","حرفان"]]]},
+{t:"أنواع الجموع",pg:"١٣",
+ book:[["جمع المذكر السالم","ما دلَّ على أكثر من اثنين بزيادة واو ونون أو ياء ونون على مفرده.","معلم: معلمون ومعلمين. مهندس: مهندسون ومهندسين"],
+       ["جمع المؤنث السالم","ما دلَّ على أكثر من اثنتين بزيادة ألف وتاء على مفرده.","طبيبة: طبيبات. معلمة: معلمات"],
+       ["جمع التكسير","ما دلَّ على أكثر من اثنين أو اثنتين بانكسار صورة مفرده: بزيادة حرف، أو نقصان حرف، أو تغيير في الضبط.","رَجُل / رِجَال. كِتَاب / كُتُب. أَسَد / أُسْد"]],
+ alt:"قارن الجمع بمفرده. إن بقي المفرد كما هو وزدنا في آخره (ون) أو (ين) فهو مذكر سالم: معلم ← معلمون. إن زدنا في آخره (ات) فهو مؤنث سالم: معلمة ← معلمات. وإن تغيّرت صورة المفرد نفسها فهو جمع تكسير: كتاب ← كتب.",
+ q:[["«معلمون» جمع:",["مذكر سالم","مؤنث سالم","تكسير"]],
+    ["«طبيبات» جمع:",["مؤنث سالم","مذكر سالم","تكسير"]],
+    ["«رجال» جمع:",["تكسير","مذكر سالم","مؤنث سالم"]],
+    ["جمع المؤنث السالم يكون بزيادة:",["ألف وتاء","واو ونون","ياء ونون"]]]},
+{t:"المذكر والمؤنث، والمفرد والمثنى والجمع",pg:"١٣",
+ book:[["المذكر","ما دلَّ على مذكر يصح أن نشير إليه بـ(هذا).","تلميذٌ، كتابٌ"],
+       ["المؤنث","ما دلَّ على مؤنث يصح أن نشير إليه بـ(هذه).","تلميذةٌ، مسطرةٌ"],
+       ["المفرد","ما دلَّ على واحد أو واحدة.","معلمٌ، معلمةٌ"],
+       ["المثنى","ما دلَّ على اثنين أو اثنتين.","معلمان، معلمتان"],
+       ["الجمع","ما دلَّ على ثلاثة فأكثر.","معلمون، معلمات، طلاب"]],
+ alt:"جرّب الإشارة: إن صحَّ أن تقول «هذا» فالاسم مذكر (هذا كتاب)، وإن صحَّ أن تقول «هذه» فهو مؤنث (هذه مسطرة). ثم عُدَّ: واحد = مفرد (معلم)، اثنان = مثنى (معلمان)، ثلاثة فأكثر = جمع (معلمون).",
+ q:[["نشير إلى الاسم المذكر بـ:",["هذا","هذه"]],
+    ["«مسطرة» اسم:",["مؤنث","مذكر"]],
+    ["«معلمان»:",["مثنى","مفرد","جمع"]],
+    ["الجمع ما دلَّ على:",["ثلاثة فأكثر","اثنين أو اثنتين","واحد أو واحدة"]]]},
+{t:"الهمزة، والتاء المفتوحة والمربوطة",pg:"١٤",
+ book:[["همزة القطع","همزة يُنطق بها في أول الكلام ووسطه، وتُكتب في أول الكلمة (أ) أو (إ).","أحمد، أَخْرَجَ، إخْراج"],
+       ["همزة الوصل","همزة تُنطق في ابتداء الكلام، ولا يُنطق بها عند وصلها بما قبلها، وتُكتب (ا).","ابن، اِسْتَعَانَ"],
+       ["التاء المفتوحة (ت)","عند الوقف تُنطق (ت)، وعند الوصل تُنطق (ت).","بنتْ، بيتْ. بنتُ أحمد، بيتُ خالد"],
+       ["التاء المربوطة (ـة، ة)","عند الوقف تُنطق هاءً، وعند الوصل تُنطق تاءً.","غرفةْ، قصةْ. غرفةُ الحارس، قصةُ زيد"]],
+ alt:"للهمزة: انظر إلى الألف في أول الكلمة. إن كُتبت فوقها أو تحتها همزة (أ، إ) فهي قطع وتُنطق دائمًا: أحمد. وإن كُتبت ألفًا فقط (ا) فهي وصل: ابن. وللتاء: قف على الكلمة وانطقها. إن سمعت تاءً فهي مفتوحة: بيتْ. وإن سمعت هاءً فهي مربوطة: غرفةْ.",
+ q:[["الهمزة في «أحمد» همزة:",["قطع","وصل"]],
+    ["الهمزة في «ابن» همزة:",["وصل","قطع"]],
+    ["التاء في «بيت» تاء:",["مفتوحة","مربوطة"]],
+    ["التاء المربوطة عند الوقف تُنطق:",["هاءً","تاءً"]]]}
+];
+const L2=[
+{t:"جمع المذكر السالم",pg:"٦٥",
+ book:[["جمع المذكر السالم","ما دلَّ على أكثر من اثنين بزيادة واو ونون أو ياء ونون على مفرده.","مُتَسابِق: مُتَسابِقونَ، مُتَسابِقينَ"]],
+ alt:"خذ المفرد المذكر كما هو، ثم أضف في آخره (ونَ) أو (ينَ): متسابق + ون = متسابقون، متسابق + ين = متسابقين. المفرد نفسه لم يتغير، ولهذا قال الكتاب: بزيادة على مفرده.",
+ q:[["جمع المذكر السالم يدل على:",["أكثر من اثنين","اثنين فقط","واحد"]],
+    ["نزيد على المفرد في جمع المذكر السالم:",["واوًا ونونًا أو ياءً ونونًا","ألفًا وتاءً","ألفًا ونونًا"]],
+    ["جمع «صادق» بزيادة (ون):",["صادقون","صادقات","صادقان"]],
+    ["جمع «صابر» بزيادة (ين):",["صابرين","صابرات","صابران"]],
+    ["جمع «تائب» جمع مذكر سالمًا:",["تائبون","تائبات","تائبان"]]]}
+];
+const L3=[
+{t:"الأفعال الخمسة",pg:"٦٦ و٦٧",
+ book:[["الأفعال الخمسة","كل فعل مضارع اتصلت به ألف الاثنين أو واو الجماعة أو ياء المخاطبة.","من الفعل (تعمل): يعملان، تعملان، يعملون، تعملون، تعملين"]],
+ alt:"ابدأ بفعل مضارع مثل (يدرس)، ثم صِل به أحد ثلاثة ضمائر. مع ألف الاثنين: يدرسان، تدرسان. مع واو الجماعة: يدرسون، تدرسون. مع ياء المخاطبة: تدرسين. الضمائر ثلاثة والصور خمس، كما في دائرة الفعل (تعمل) في الكتاب.",
+ q:[["الأفعال الخمسة أفعال:",["مضارعة","ماضية","أمر"]],
+    ["يتصل بالأفعال الخمسة:",["ألف الاثنين أو واو الجماعة أو ياء المخاطبة","التنوين","ال التعريف"]],
+    ["الفعل من الأفعال الخمسة في «الليلُ والنهارُ يتعاقبان»:",["يتعاقبان","الليل","النهار"]],
+    ["الفعل من الأفعال الخمسة في «أنتِ يا هندُ تحبّين والديكِ»:",["تحبّين","هند","والديك"]],
+    ["الفعل من الأفعال الخمسة في «المخترعون يعملون بجدّ»:",["يعملون","المخترعون","بجدّ"]],
+    ["«تعملين» اتصلت بها:",["ياء المخاطبة","واو الجماعة","ألف الاثنين"]]]}
+];
+const L4=[
+{t:"أنواع الجموع",pg:"٦٨",
+ book:[["جمع المذكر السالم","ما دلَّ على أكثر من اثنين بزيادة واو ونون أو ياء ونون على مفرده.",""],
+       ["جمع المؤنث السالم","ما دلَّ على أكثر من اثنتين بزيادة ألف وتاء على مفرده.",""],
+       ["جمع التكسير","ما دلَّ على أكثر من اثنين أو اثنتين بانكسار صورة مفرده.",""]],
+ alt:"ثلاث خطوات: ابحث في الجملة عن الكلمة التي تدل على أكثر من اثنين، ثم انظر إلى آخرها. إن زِيد على مفردها (ون) أو (ين) فهي جمع مذكر سالم. إن زِيد على مفردها (ات) فهي جمع مؤنث سالم. وإن تغيّرت صورة المفرد نفسها فهي جمع تكسير.",
+ q:[["«حكايات» في «في القصصِ حكاياتٌ ممتعةٌ» جمع:",["مؤنث سالم","مذكر سالم","تكسير"]],
+    ["«الصادقون» في «الصادقون محبوبون» جمع:",["مذكر سالم","مؤنث سالم","تكسير"]],
+    ["«الزهور» في «ألوانُ الزهورِ جميلةٌ» جمع:",["تكسير","مذكر سالم","مؤنث سالم"]],
+    ["«الخضراوات» في «تحتاجُ الأجسامُ للخضراواتِ والفواكه» جمع:",["مؤنث سالم","مذكر سالم","تكسير"]],
+    ["«المدرّبين» في «لمسنا براعةَ المدرّبين» جمع:",["مذكر سالم","مؤنث سالم","تكسير"]],
+    ["«الملاعب» في «الملاعبَ الفسيحةَ» جمع:",["تكسير","مذكر سالم","مؤنث سالم"]]]}
+];
+const L5=[
+{t:"ما الهمزة المتوسطة على الألف؟",pg:"٦٩ و٧٠",
+ book:[["الهمزة المتوسطة على ألف","همزة وقعت في وسط الكلمة ورُسمت على ألف.","الكَأْس، مَلْأَى"],
+       ["خطوات رسم الهمزة المتوسطة","١. أحدد حركة الهمزة وحركة الحرف قبلها. ٢. أحدد أقوى الحركتين. ٣. أحدد الحرف الذي يناسب أقوى الحركتين وأرسم الهمزة عليه.",""],
+       ["أقوى الحركات","١. الكسرة. ٢. الضمة. ٣. الفتحة. ثم السكون وهو سلب الحركة. الياء تناسب الكسرة، والواو تناسب الضمة، والألف تناسب الفتحة.",""]],
+ alt:"تخيّل الميزان المرسوم في الكتاب: في كفّة حركة الهمزة، وفي الكفّة الأخرى حركة الحرف الذي قبلها. الحركة الأقوى تفوز، وهي التي تختار الحرف الذي تُرسم عليه الهمزة. ترتيب القوة: الكسرة، ثم الضمة، ثم الفتحة، ثم السكون.",
+ q:[["الهمزة المتوسطة تقع في:",["وسط الكلمة","أول الكلمة","آخر الكلمة"]],
+    ["أقوى الحركات:",["الكسرة","الضمة","الفتحة"]],
+    ["الحرف الذي يناسب الفتحة:",["الألف","الواو","الياء"]],
+    ["الواو تناسب:",["الضمة","الكسرة","الفتحة"]],
+    ["السكون هو:",["سلب الحركة","أقوى الحركات","حركة تناسب الياء"]]]},
+{t:"متى تُكتب الهمزة المتوسطة على الألف؟",pg:"٧١",
+ book:[["القاعدة","تُكتب الهمزة المتوسطة على الألف إذا كانت الفتحة أقوى، أي في المواضع الآتية:",""],
+       ["الموضع الأول","إذا كانت الهمزة مفتوحة والحرف الذي قبلها مفتوح.","دَأَبَ"],
+       ["الموضع الثاني","إذا كانت الهمزة ساكنة والحرف الذي قبلها مفتوح.","رَأْس"],
+       ["الموضع الثالث","إذا كانت الهمزة مفتوحة والحرف الذي قبلها ساكن.","هيْأَة"]],
+ alt:"في المواضع الثلاثة لا توجد كسرة ولا ضمة، بل فتحتان أو فتحة وسكون. والفتحة أقوى من السكون، فتفوز الفتحة ويناسبها الألف. مثال من جدول الكتاب: (رَأْسها) حركة الهمزة السكون وحركة ما قبلها الفتحة، فالحرف المناسب الألف.",
+ q:[["تُكتب الهمزة المتوسطة على الألف إذا كانت أقوى الحركتين:",["الفتحة","الكسرة","الضمة"]],
+    ["في «رَأْس» الهمزة ساكنة والحرف الذي قبلها:",["مفتوح","مكسور","مضموم"]],
+    ["«دَأَبَ» مثال على:",["الهمزة مفتوحة وما قبلها مفتوح","الهمزة ساكنة وما قبلها مفتوح","الهمزة مفتوحة وما قبلها ساكن"]],
+    ["«هيْأَة» مثال على:",["الهمزة مفتوحة وما قبلها ساكن","الهمزة مفتوحة وما قبلها مفتوح","الهمزة ساكنة وما قبلها مفتوح"]],
+    ["الكلمة التي فيها همزة متوسطة على ألف في «يرأفُ الأبناءُ بوالديهم»:",["يرأف","الأبناء","بوالديهم"]],
+    ["الكلمة التي فيها همزة متوسطة على ألف في «وضعَ الأبُ السلحفاةَ قربَ المدفأةِ»:",["المدفأة","السلحفاة","قرب"]]]}
+];
+const LES=[{t:"مراجعة المكتسبات السابقة",pg:"١٢ إلى ١٤",parts:L1},{t:"جمع المذكر السالم",pg:"٦٥",parts:L2},{t:"الأفعال الخمسة",pg:"٦٦ و٦٧",parts:L3},{t:"أنواع الجموع",pg:"٦٨",parts:L4},{t:"الهمزة المتوسطة على الألف",pg:"٦٩ إلى ٧١",parts:L5}];
+let P=L1,li=0;
+function best(i){try{return +localStorage.getItem("saud-l"+i)||0}catch(e){return 0}}
+function menu(){
+  $("rail").innerHTML="";$("home").hidden=true;
+  $("stage").innerHTML=`<h2>اختر درسًا</h2>`+LES.map((l,i)=>{const tot=l.parts.reduce((s,p)=>s+p.q.length,0),b=best(i);
+    return `<button class="opt les" data-i="${i}"><span>${n(i+1)}. ${l.t}<br><span class="pg">صفحة ${l.pg}</span></span><b class="${b===tot?"full":""}">${b?n(b)+" / "+n(tot):"جديد"}</b></button>`}).join("")+`<div class="row"><button class="go plain" id="rep">تقرير ولي الأمر</button></div>`;
+  $("rep").onclick=()=>{report();goTop()};
+  $("stage").querySelectorAll(".les").forEach(b=>b.onclick=()=>{li=+b.dataset.i;P=LES[li].parts;pi=0;got=P.map(()=>0);$("home").hidden=false;read();goTop()});
+}
+const AR="٠١٢٣٤٥٦٧٨٩",n=x=>String(x).replace(/\d/g,d=>AR[d]);
+const $=id=>document.getElementById(id);
+let pi=0,mode="read",qi=0,got=P.map(()=>0);
+
+function rail(){$("rail").innerHTML=P.map((_,i)=>`<i class="${i<pi?"done":i===pi?"now":""}"></i>`).join("")}
+function goTop(){try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){}}
+function read(){
+  const p=P[pi];mode="read";rail();
+  $("stage").innerHTML=`<div><h2>${n(pi+1)}. ${p.t}</h2><span class="pg">الكتاب، صفحة ${p.pg}</span></div>
+  <div class="card"><span class="tag">من الكتاب</span><dl>${p.book.map(b=>`<div><dt>${b[0]}</dt><dd>${b[1]}${b[2]?` <span class="ex">${b[1]?"مثل: ":""}${b[2]}</span>`:""}</dd></div>`).join("")}</dl></div>
+  <div class="card alt"><span class="tag">بطريقة أخرى</span><p>${p.alt}</p></div>
+  <button class="go" id="start">اختبر نفسك</button>`;
+  $("start").onclick=()=>{qi=0;got[pi]=0;quiz()};
+}
+function quiz(){
+  const p=P[pi],q=p.q[qi];mode="quiz";
+  const order=q[1].map((t,i)=>[t,i]).sort(()=>Math.random()-.5);
+  $("stage").innerHTML=`<div><h2>${p.t}</h2><span class="pg">سؤال ${n(qi+1)} من ${n(p.q.length)}</span></div>
+  <div class="card"><p class="q">${q[0]}</p><div class="opts">${order.map(o=>`<button class="opt" data-i="${o[1]}">${o[0]}</button>`).join("")}</div>
+  <p class="fb" id="fb" aria-live="polite"></p></div><div class="row" id="nav"></div>`;
+  let done=false;
+  $("stage").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(done)return;done=true;
+    const ok=b.dataset.i==="0",fb=$("fb");
+    $("stage").querySelector('.opt[data-i="0"]').classList.add("ok");
+    if(ok){got[pi]++;fb.className="fb ok";fb.textContent="إجابة صحيحة، أحسنت يا سعود!"}
+    else{b.classList.add("no");fb.className="fb no";fb.textContent=`الصحيح: ${q[1][0]}. راجع صفحة ${p.pg} من الكتاب.`}
+    const last=qi===p.q.length-1;
+    $("nav").innerHTML=`<button class="go" id="next">${last?(pi===P.length-1?"النتيجة":"الجزء التالي"):"السؤال التالي"}</button>`;
+    $("next").onclick=()=>{if(!last){qi++;quiz()}else{pi++;pi<P.length?read():result();goTop()}};
+  });
+}
+function result(){
+  rail();
+  const total=P.reduce((s,p)=>s+p.q.length,0),sc=got.reduce((a,b)=>a+b,0);
+  const bst=Math.max(sc,best(li));try{localStorage.setItem("saud-l"+li,bst)}catch(e){}
+  const weak=P.filter((p,i)=>got[i]<p.q.length);
+  $("stage").innerHTML=`<div class="card"><h2>نتيجة الدرس</h2><p class="big">${n(sc)} / ${n(total)}</p>
+  <p>${sc===total?"ممتاز يا سعود! أتقنت الدرس كله.":weak.length<=2?"عمل جيد. بقيت أجزاء قليلة تحتاج مراجعة.":"تحتاج أن تراجع الدرس مرة أخرى، وستتقنه."}</p>
+  <ul class="res">${P.map((p,i)=>`<li class="${got[i]<p.q.length?"weak":""}"><span>${p.t}</span><b>${n(got[i])} / ${n(p.q.length)}</b></li>`).join("")}</ul>
+  <p class="pg">أفضل نتيجة لك على هذا الجهاز: ${n(bst)} / ${n(total)}</p><p class="pg" id="save"></p></div>
+  <div class="row"><button class="go" id="again">أعد الدرس</button><button class="go plain" id="list">قائمة الدروس</button></div>`;
+  $("list").onclick=()=>{menu();goTop()};
+  const note=t=>{const e=$("save");if(e)e.textContent=t};
+  const row={li,lesson:LES[li].t,score:sc,total,weak:weak.map(p=>p.t),at:Date.now()};
+  if(db){note("جارٍ حفظ النتيجة في التقرير…");
+    db.collection("results").add(row)
+      .then(()=>note("تم حفظ النتيجة في تقرير ولي الأمر."),()=>note("تعذّر حفظ النتيجة في التقرير. النتيجة محفوظة على هذا الجهاز فقط."))}
+  else{try{const a=local();a.unshift(row);localStorage.setItem("saud-log",JSON.stringify(a.slice(0,300)));note("تم حفظ النتيجة في التقرير على هذا الجهاز.")}catch(e){note("تعذّر حفظ النتيجة على هذا الجهاز.")}}
+  $("again").onclick=()=>{pi=0;got=P.map(()=>0);read();goTop()};
+}
+let db=null;
+try{window.claude&&window.claude.use&&window.claude.use("db").then(d=>{db=d},()=>{})}catch(e){}
+function local(){try{return JSON.parse(localStorage.getItem("saud-log"))||[]}catch(e){return []}}
+function report(){
+  $("rail").innerHTML="";$("home").hidden=false;
+  $("stage").innerHTML=`<h2>تقرير ولي الأمر</h2><div class="card"><p>جارٍ تحميل النتائج…</p></div>`;
+  (db?db.collection("results").orderBy("at","desc").limit(300).get().then(s=>s.docs.map(d=>d.data())):Promise.resolve(local())).then(rows=>{
+    const now=Date.now(),d0=new Date();d0.setHours(0,0,0,0);
+    const today=rows.filter(r=>r.at>=d0.getTime()),week=rows.filter(r=>r.at>=now-7*864e5);
+    const tm=t=>{try{return new Date(t).toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"})}catch(e){return ""}};
+    const line=r=>`<li class="${r.score<r.total?"weak":""}"><span>${tm(r.at)} · ${r.lesson}${r.weak&&r.weak.length?`<br><span class="pg">يحتاج مراجعة: ${r.weak.join("، ")}</span>`:""}</span><b>${n(r.score)} / ${n(r.total)}</b></li>`;
+    const per=LES.map((l,i)=>{const a=week.filter(r=>r.li===i);if(!a.length)return "";
+      const b=Math.max(...a.map(r=>r.score)),tot=a[0].total;
+      return `<li class="${b<tot?"weak":""}"><span>${l.t}<br><span class="pg">عدد المحاولات: ${n(a.length)} · آخر نتيجة: ${n(a[0].score)} / ${n(tot)}</span></span><b>${n(b)} / ${n(tot)}</b></li>`}).join("");
+    const left=LES.filter((l,i)=>!rows.some(r=>r.li===i)).map(l=>l.t);
+    $("stage").innerHTML=`<h2>تقرير ولي الأمر</h2>
+    <div class="card"><span class="tag">اليوم</span>${today.length?`<ul class="res">${today.map(line).join("")}</ul>`:`<p>لم يُكمل سعود أي درس اليوم.</p>`}</div>
+    <div class="card"><span class="tag">آخر ٧ أيام · أفضل نتيجة لكل درس</span>${per?`<ul class="res">${per}</ul>`:`<p>لا توجد نتائج في آخر ٧ أيام.</p>`}</div>
+    ${db?"":`<p class="pg">هذا التقرير يعرض النتائج المحفوظة على هذا الجهاز.</p>`}
+    <div class="card alt"><span class="tag">دروس لم يبدأها</span><p>${left.length?left.join("، "):"أكمل كل الدروس المتاحة."}</p></div>`;
+  },()=>{$("stage").innerHTML=`<h2>تقرير ولي الأمر</h2><div class="card"><p>تعذّر تحميل النتائج. حاول مرة أخرى بعد قليل.</p></div>`});
+}
+$("home").onclick=()=>{menu();goTop()};
+menu();
+</script>
+
+</body>
+</html>
